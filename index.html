@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sienna — Photography</title>
+<meta name="description" content="Portrait, lifestyle & event photography by Sienna. Book a session." />
+
+<!-- ============================================================= -->
+<!--  CONFIG — edit these 6 lines, nothing else needed             -->
+<!-- ============================================================= -->
+<script>
+const CONFIG = {
+  photographerName: "Sienna",
+  tagline: "Portrait • Lifestyle • Event Photography",
+  email: "hello@example.com",              // shown in footer / contact button
+  instagramHandle: "captured.by.sienna",   // WITHOUT the @
+  // Google Calendar Appointment Schedule booking-page URL.
+  // Get it: Google Calendar → create Appointment schedule → "Open booking page" → copy URL.
+  // Looks like: https://calendar.google.com/calendar/appointments/schedules/AcZssZ...
+  bookingUrl: "",                          // paste it here — leave "" to show a placeholder
+  city: "Marion, NY",
+  // Instagram post used as the About portrait (a photo of Sienna).
+  aboutPost: "https://www.instagram.com/p/DQ2LNYykVBzNOc_h0bLRtM1ZLyrBcvBytQ94wk0/",
+  // Instagram post links shown in the portfolio gallery. Add/remove freely.
+  instagramPosts: [
+    "https://www.instagram.com/p/DaJjtF8jsz8/",
+    "https://www.instagram.com/p/DYfVmfjDruV/",
+    "https://www.instagram.com/p/DSvAEh6jmkC/",
+    "https://www.instagram.com/p/DOl3DswDssP/",
+    "https://www.instagram.com/p/DOtxRcKjrb6/"
+  ]
+};
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg:        #f7f4ef;
+    --bg-2:      #efe9e1;
+    --ink:       #2b2622;
+    --ink-soft:  #6b635b;
+    --accent:    #a9886b;
+    --line:      #ddd4c8;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans:  "Inter", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3 { font-family: var(--serif); font-weight: 400; line-height: 1.1; }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+  .eyebrow {
+    font-size: .72rem; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247,244,239,.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { font-family: var(--serif); font-size: 1.5rem; letter-spacing: .04em; }
+  .navlinks { display: flex; gap: 30px; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+  .navlinks a { color: var(--ink-soft); transition: color .2s; }
+  .navlinks a:hover { color: var(--ink); }
+  @media (max-width: 640px) { .navlinks { display: none; } }
+
+  /* ---- HERO ---- */
+  .hero { position: relative; min-height: 86vh; display: flex; align-items: center;
+    background: linear-gradient(180deg, var(--bg-2), var(--bg)); overflow: hidden; }
+  .hero .wrap { text-align: center; padding-top: 40px; padding-bottom: 40px; }
+  .hero h1 { font-size: clamp(3rem, 9vw, 6.5rem); font-weight: 300; letter-spacing: .01em; }
+  .hero .tagline { margin-top: 14px; font-size: clamp(.9rem,2vw,1.1rem);
+    letter-spacing: .22em; text-transform: uppercase; color: var(--ink-soft); }
+  .btn {
+    display: inline-block; margin-top: 36px; padding: 15px 40px;
+    border: 1px solid var(--ink); border-radius: 40px;
+    font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+    transition: background .25s, color .25s;
+  }
+  .btn:hover { background: var(--ink); color: var(--bg); }
+  .btn-solid { background: var(--ink); color: var(--bg); }
+  .btn-solid:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* ---- SECTIONS ---- */
+  section { padding: 96px 0; }
+  .section-head { text-align: center; margin-bottom: 56px; }
+  .section-head h2 { font-size: clamp(2.2rem,5vw,3.4rem); margin-top: 10px; }
+
+  /* ---- ABOUT ---- */
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .about .portrait { aspect-ratio: 4/5; background: var(--bg-2) center/cover;
+    border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,.08); }
+  #about-portrait { aspect-ratio: auto; background: none; box-shadow: none; }
+  #about-portrait .instagram-media { margin: 0 auto !important; }
+  .about p { color: var(--ink-soft); margin-top: 18px; font-size: 1.05rem; }
+  @media (max-width: 720px){ .about { grid-template-columns: 1fr; } }
+
+  /* ---- GALLERY (Instagram embeds) ---- */
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px; justify-items: center; }
+  .gallery .instagram-media { margin: 0 auto !important; }
+
+  /* ---- SERVICES ---- */
+  .cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 6px;
+    padding: 38px 30px; text-align: center; }
+  .card h3 { font-size: 1.8rem; }
+  .card .price { color: var(--accent); font-family: var(--serif); font-size: 1.6rem; margin: 8px 0 16px; }
+  .card ul { list-style: none; color: var(--ink-soft); font-size: .92rem; }
+  .card li { padding: 5px 0; border-top: 1px solid var(--line); }
+  .card li:first-child { border-top: none; }
+  @media (max-width: 720px){ .cards { grid-template-columns: 1fr; } }
+
+  /* ---- BOOKING ---- */
+  #book { background: var(--bg-2); }
+  .book-note { text-align:center; color: var(--ink-soft); max-width: 560px; margin: 0 auto 36px; }
+  #cal-embed { min-height: 640px; background: #fff; border: 1px solid var(--line);
+    border-radius: 8px; overflow: hidden; }
+  #cal-embed iframe { width: 100%; height: 640px; border: 0; }
+  .cal-fallback { display: grid; place-items: center; min-height: 640px; text-align: center;
+    padding: 40px; color: var(--ink-soft); font-family: var(--serif); font-size: 1.3rem; }
+  .cal-fallback a { color: var(--accent); border-bottom: 1px solid var(--accent); }
+
+  /* ---- INSTAGRAM ---- */
+  .ig { text-align: center; }
+  .ig a.handle { font-family: var(--serif); font-size: 2rem; color: var(--ink); }
+  .ig a.handle:hover { color: var(--accent); }
+  .ig-row { display:flex; gap:14px; justify-content:center; margin-top:28px; }
+  .ig-row a { width:64px; height:64px; border:1px solid var(--line); border-radius:50%;
+    display:grid; place-items:center; transition: all .25s; background:#fff; }
+  .ig-row a:hover { background: var(--ink); color: var(--bg); transform: translateY(-3px); }
+  .ig-row svg { width: 26px; height: 26px; }
+
+  /* ---- FOOTER ---- */
+  footer { background: var(--ink); color: #d8cfc4; padding: 64px 0 40px; text-align: center; }
+  footer .brand { color: #fff; }
+  footer p { font-size: .85rem; margin-top: 14px; letter-spacing: .04em; }
+  footer a { color: var(--accent); }
+
+  /* ---- MOBILE ---- */
+  html, body { overflow-x: hidden; max-width: 100%; }
+  .gallery .instagram-media,
+  #about-portrait .instagram-media { min-width: 0 !important; width: 100% !important; }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 20px; }
+    section { padding: 60px 0; }
+    .hero { min-height: 78vh; }
+    .section-head { margin-bottom: 36px; }
+    .about { gap: 32px; }
+    #about-portrait { max-width: 380px; margin: 0 auto; }
+    .gallery { grid-template-columns: 1fr; gap: 16px; }
+    .btn { padding: 14px 34px; }
+    /* keep nav usable: show a Book shortcut instead of hidden links */
+    .navlinks { display: flex !important; gap: 0; }
+    .navlinks a:not([href="#book"]) { display: none; }
+    .navlinks a[href="#book"] { color: var(--accent); font-weight: 500; }
+  }
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top" data-brand></a>
+  <div class="navlinks">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#book">Book</a>
+  </div>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <p class="eyebrow">Photography Studio</p>
+  <h1 data-name></h1>
+  <p class="tagline" data-tagline></p>
+  <a class="btn btn-solid" href="#book">Book a Session</a>
+</div></header>
+
+<section id="about"><div class="wrap">
+  <div class="about">
+    <div class="portrait" id="about-portrait"></div>
+    <div>
+      <p class="eyebrow">About</p>
+      <h2>Capturing the quiet, honest moments.</h2>
+      <p>Hi, I'm <span data-name-inline></span> — an amateur photographer who loves
+      natural light, real expressions, and telling small stories with a frame.
+      Whether it's a portrait, a milestone, or a casual lifestyle shoot, I keep
+      things relaxed and let the moment lead.</p>
+      <p>Based in <span data-city></span>. Always happy to travel for the right shot.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="work" style="background:var(--bg-2)"><div class="wrap">
+  <div class="section-head"><p class="eyebrow">Portfolio</p><h2>Selected Work</h2></div>
+  <div class="gallery" id="gallery"></div>
+</div></section>
+
+<section id="services"><div class="wrap">
+  <div class="section-head"><p class="eyebrow">Sessions</p><h2>Packages</h2></div>
+  <div class="cards">
+    <div class="card"><h3>Mini</h3><div class="price">$120</div>
+      <ul><li>30 minutes</li><li>1 location</li><li>15 edited photos</li><li>Online gallery</li></ul></div>
+    <div class="card"><h3>Portrait</h3><div class="price">$220</div>
+      <ul><li>1 hour</li><li>2 locations</li><li>40 edited photos</li><li>Print release</li></ul></div>
+    <div class="card"><h3>Event</h3><div class="price">From $400</div>
+      <ul><li>Up to 3 hours</li><li>Full coverage</li><li>100+ edited photos</li><li>Fast turnaround</li></ul></div>
+  </div>
+</div></section>
+
+<section id="book"><div class="wrap">
+  <div class="section-head"><p class="eyebrow">Schedule</p><h2>Book Your Session</h2></div>
+  <p class="book-note">Pick any open time below. You'll get a calendar invite by email
+  the moment you book — and so will <span data-name-inline></span>.</p>
+  <div id="cal-embed"></div>
+</div></section>
+
+<section id="instagram" style="background:var(--bg-2)"><div class="wrap ig">
+  <p class="eyebrow">Follow Along</p>
+  <h2 style="margin:10px 0 22px">On Instagram</h2>
+  <a class="handle" data-ig-handle href="#" target="_blank" rel="noopener"></a>
+  <div class="ig-row">
+    <a data-ig-link href="#" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a data-email-link href="#" aria-label="Email">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+    </a>
+  </div>
+</div></section>
+
+<footer id="contact"><div class="wrap">
+  <a class="brand" data-brand></a>
+  <p data-tagline></p>
+  <p>Email: <a data-email-text data-email-link href="#"></a></p>
+  <p style="opacity:.6;margin-top:24px">© <span id="year"></span> <span data-name-inline></span> Photography</p>
+</div></footer>
+
+<script>
+// ---- Apply config to the page ----
+(function () {
+  const C = CONFIG;
+  document.querySelectorAll('[data-name]').forEach(e => e.textContent = C.photographerName);
+  document.querySelectorAll('[data-name-inline]').forEach(e => e.textContent = C.photographerName);
+  document.querySelectorAll('[data-brand]').forEach(e => e.textContent = C.photographerName);
+  document.querySelectorAll('[data-tagline]').forEach(e => e.textContent = C.tagline);
+  document.querySelectorAll('[data-city]').forEach(e => e.textContent = C.city);
+  document.title = C.photographerName + " — Photography";
+
+  const igUrl = "https://instagram.com/" + C.instagramHandle;
+  document.querySelectorAll('[data-ig-link]').forEach(e => e.href = igUrl);
+  document.querySelectorAll('[data-ig-handle]').forEach(e => { e.href = igUrl; e.textContent = "@" + C.instagramHandle; });
+
+  const mail = "mailto:" + C.email;
+  document.querySelectorAll('[data-email-link]').forEach(e => e.href = mail);
+  document.querySelectorAll('[data-email-text]').forEach(e => e.textContent = C.email);
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---- Instagram embeds (official, no API token) ----
+  function igBlockquote(url) {
+    const bq = document.createElement('blockquote');
+    bq.className = 'instagram-media';
+    bq.setAttribute('data-instgrm-permalink', url);
+    bq.setAttribute('data-instgrm-version', '14');
+    bq.style.cssText = 'margin:0;width:100%;max-width:540px;min-width:300px;';
+    return bq;
+  }
+  const portrait = document.getElementById('about-portrait');
+  if (C.aboutPost) portrait.appendChild(igBlockquote(C.aboutPost));
+
+  const g = document.getElementById('gallery');
+  (C.instagramPosts || []).forEach(url => g.appendChild(igBlockquote(url)));
+
+  // Load Instagram's embed script, then render all blockquotes into iframes.
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.instagram.com/embed.js';
+  s.onload = () => window.instgrm && window.instgrm.Embeds.process();
+  document.body.appendChild(s);
+})();
+
+// ---- Google Calendar Appointment Schedule embed ----
+//   Sienna marks free times in her Google Calendar app. Bookings auto-email
+//   calendar invites to both parties and land on her calendar. No login on this site.
+(function () {
+  const el = document.getElementById('cal-embed');
+  const url = (CONFIG.bookingUrl || "").trim();
+  if (url) {
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.loading = "lazy";
+    iframe.title = "Book a session";
+    el.appendChild(iframe);
+  } else {
+    el.innerHTML = '<div class="cal-fallback">Online booking opening soon.<br>' +
+      'Reach out at <a href="mailto:' + CONFIG.email + '">' + CONFIG.email + '</a> to schedule.</div>';
+  }
+})();
+</script>
+</body>
+</html>
