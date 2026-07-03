@@ -20,7 +20,10 @@ const CONFIG = {
   // Looks like: https://calendar.google.com/calendar/appointments/schedules/AcZssZ...
   bookingUrl: "",                          // paste it here — leave "" to show a placeholder
   city: "Marion, NY",
-  // Instagram post used as the About portrait (a photo of Sienna).
+  // About portrait. PREFER a real image file (sharp, no IG branding):
+  //   drop e.g. headshot.jpg in a "photos" folder, set: aboutImage: "photos/headshot.jpg"
+  aboutImage: "",   // if set, this wins over aboutPost below
+  // Fallback: Instagram post of Sienna. NOTE: must be a normal 11-char /p/CODE/ link.
   aboutPost: "https://www.instagram.com/p/DQ2LNYykVBzNOc_h0bLRtM1ZLyrBcvBytQ94wk0/",
   // Instagram post links shown in the portfolio gallery. Add/remove freely.
   instagramPosts: [
@@ -254,7 +257,12 @@ const CONFIG = {
   <a class="brand" data-brand></a>
   <p data-tagline></p>
   <p>Email: <a data-email-text data-email-link href="#"></a></p>
-  <p style="opacity:.6;margin-top:24px">© <span id="year"></span> <span data-name-inline></span> Photography</p>
+  <p style="margin-top:20px;font-size:.8rem">
+    <a href="privacy.html">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="terms.html">Terms of Use</a>
+  </p>
+  <p style="opacity:.6;margin-top:16px">© <span id="year"></span> <span data-name-inline></span> Photography. All rights reserved.</p>
+  <p style="opacity:.45;margin-top:6px;font-size:.72rem">All photographs are the property of the photographer and may not be reproduced without permission.</p>
 </div></footer>
 
 <script>
@@ -288,7 +296,15 @@ const CONFIG = {
     return bq;
   }
   const portrait = document.getElementById('about-portrait');
-  if (C.aboutPost) portrait.appendChild(igBlockquote(C.aboutPost));
+  if (C.aboutImage) {
+    const img = document.createElement('img');
+    img.src = C.aboutImage;
+    img.alt = C.photographerName + ", photographer";
+    img.style.cssText = 'width:100%;border-radius:4px;box-shadow:0 20px 50px rgba(0,0,0,.08);';
+    portrait.appendChild(img);
+  } else if (C.aboutPost) {
+    portrait.appendChild(igBlockquote(C.aboutPost));
+  }
 
   const g = document.getElementById('gallery');
   (C.instagramPosts || []).forEach(url => g.appendChild(igBlockquote(url)));
