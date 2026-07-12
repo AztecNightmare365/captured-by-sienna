@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Gallery — Captured by Sienna</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg:#f7f4ef; --bg2:#efe9e1; --ink:#2b2622; --soft:#6b635b; --accent:#a9886b; --line:#ddd4c8; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Inter",system-ui,sans-serif; color:var(--ink); background:var(--bg);
+    line-height:1.6; font-weight:300; -webkit-font-smoothing:antialiased; }
+  a { color:inherit; text-decoration:none; }
+  header.top { border-bottom:1px solid var(--line); background:rgba(247,244,239,.9); backdrop-filter:blur(8px);
+    position:sticky; top:0; z-index:10; }
+  header.top .in { max-width:1200px; margin:0 auto; padding:16px 26px; display:flex; justify-content:space-between; align-items:center; }
+  .brand { font-family:"Cormorant Garamond",serif; font-size:1.4rem; letter-spacing:.04em; }
+  .hero { text-align:center; padding:64px 26px 40px; }
+  .hero .eyebrow { font-size:.7rem; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); font-weight:500; }
+  .hero h1 { font-family:"Cormorant Garamond",serif; font-weight:300; font-size:clamp(2.4rem,6vw,4rem); margin-top:8px; }
+  .hero .date { color:var(--soft); margin-top:8px; font-size:.9rem; letter-spacing:.04em; }
+  .grid { max-width:1200px; margin:0 auto; padding:20px 20px 80px;
+    columns:3; column-gap:14px; }
+  .grid figure { break-inside:avoid; margin-bottom:14px; position:relative; overflow:hidden;
+    border-radius:4px; background:var(--bg2); cursor:zoom-in; }
+  .grid img { width:100%; display:block; transition:transform .4s; }
+  .grid figure:hover img { transform:scale(1.03); }
+  @media (max-width:820px){ .grid { columns:2; } }
+  @media (max-width:520px){ .grid { columns:1; } }
+  .msg { text-align:center; padding:120px 26px; color:var(--soft); font-family:"Cormorant Garamond",serif; font-size:1.4rem; }
+  /* lightbox */
+  .lb { position:fixed; inset:0; background:rgba(20,17,14,.94); display:none; z-index:100;
+    align-items:center; justify-content:center; flex-direction:column; }
+  .lb.open { display:flex; }
+  .lb img { max-width:92vw; max-height:82vh; border-radius:4px; }
+  .lb .ctrl { position:absolute; top:0; left:0; right:0; display:flex; justify-content:space-between;
+    padding:18px 22px; color:#f7f4ef; }
+  .lb .ctrl a, .lb .ctrl button { color:#f7f4ef; background:none; border:1px solid rgba(247,244,239,.4);
+    border-radius:40px; padding:8px 18px; font:inherit; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase;
+    cursor:pointer; }
+  .lb .ctrl a:hover, .lb .ctrl button:hover { background:rgba(247,244,239,.15); }
+  .lb .nav { position:absolute; top:50%; transform:translateY(-50%); font-size:2.4rem; color:#f7f4ef;
+    background:none; border:none; cursor:pointer; padding:20px; opacity:.7; }
+  .lb .nav:hover { opacity:1; }
+  .lb .prev { left:8px; } .lb .next { right:8px; }
+  footer { text-align:center; padding:40px 26px; border-top:1px solid var(--line); color:var(--soft); font-size:.82rem; }
+  footer a { color:var(--accent); }
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="brand" href="index.html">Captured by Sienna</a>
+  <a class="brand" style="font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)" href="index.html">Portfolio →</a>
+</div></header>
+
+<div id="content"><div class="msg">Loading gallery…</div></div>
+
+<div class="lb" id="lb">
+  <div class="ctrl">
+    <a id="lb-download" download>Download</a>
+    <button id="lb-close">Close ✕</button>
+  </div>
+  <button class="nav prev" id="lb-prev">‹</button>
+  <img id="lb-img" alt="" />
+  <button class="nav next" id="lb-next">›</button>
+</div>
+
+<footer>
+  © <span id="yr"></span> Captured by Sienna · Marion, NY ·
+  <a href="index.html">View portfolio</a>
+</footer>
+
+<script>
+const GH = { owner: "AztecNightmare365", repo: "captured-by-sienna", branch: "main" };
+const $ = s => document.querySelector(s);
+$("#yr").textContent = new Date().getFullYear();
+
+const slug = new URLSearchParams(location.search).get("g");
+const base = "galleries/" + (slug || "");
+let PHOTOS = [], idx = 0;
+
+function fail(msg) { $("#content").innerHTML = '<div class="msg">' + msg + '</div>'; }
+
+async function load() {
+  if (!slug || !/^[a-z0-9-]+$/.test(slug)) return fail("Gallery not found.");
+  let meta;
+  try {
+    const r = await fetch(base + "/gallery.json", { cache: "no-store" });
+    if (!r.ok) throw 0;
+    meta = await r.json();
+  } catch (e) { return fail("This gallery isn’t available yet.<br>If it was just created, check back in a minute."); }
+
+  PHOTOS = (meta.photos || []).map(p => base + "/" + p.name);
+  const dateStr = meta.date ? new Date(meta.date + "T00:00").toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }) : "";
+  let html = '<div class="hero"><p class="eyebrow">Your Gallery</p><h1>' + escapeHtml(meta.title || "Gallery") + '</h1>' +
+    (dateStr ? '<p class="date">' + dateStr + '</p>' : '') + '</div><div class="grid" id="grid"></div>';
+  $("#content").innerHTML = html;
+  const grid = $("#grid");
+  PHOTOS.forEach((src, i) => {
+    const fig = document.createElement("figure");
+    const img = new Image(); img.src = src; img.loading = "lazy"; img.alt = "";
+    fig.appendChild(img); fig.onclick = () => openLb(i); grid.appendChild(fig);
+  });
+  if (!PHOTOS.length) fail("This gallery is empty.");
+}
+function escapeHtml(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+
+// lightbox
+const lb = $("#lb");
+function openLb(i){ idx=i; render(); lb.classList.add("open"); document.body.style.overflow="hidden"; }
+function closeLb(){ lb.classList.remove("open"); document.body.style.overflow=""; }
+function render(){ const src=PHOTOS[idx]; $("#lb-img").src=src; const dl=$("#lb-download");
+  dl.href=src; dl.download=(slug||"photo")+"-"+String(idx+1).padStart(3,"0")+".jpg"; }
+function step(d){ idx=(idx+d+PHOTOS.length)%PHOTOS.length; render(); }
+$("#lb-close").onclick=closeLb; $("#lb-prev").onclick=e=>{e.stopPropagation();step(-1);};
+$("#lb-next").onclick=e=>{e.stopPropagation();step(1);};
+lb.onclick=e=>{ if(e.target===lb) closeLb(); };
+document.addEventListener("keydown",e=>{ if(!lb.classList.contains("open"))return;
+  if(e.key==="Escape")closeLb(); if(e.key==="ArrowLeft")step(-1); if(e.key==="ArrowRight")step(1); });
+
+load();
+</script>
+</body>
+</html>
