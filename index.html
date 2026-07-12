@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Sienna — Photography</title>
-<meta name="description" content="Portrait, lifestyle & event photography by Sienna. Book a session." />
+<meta name="description" content="Portrait, lifestyle & event photography by Sienna, Marion NY." />
 
 <!-- ============================================================= -->
 <!--  CONFIG — edit these 6 lines, nothing else needed             -->
@@ -15,10 +15,6 @@ const CONFIG = {
   tagline: "Portrait • Lifestyle • Event Photography",
   email: "hello@example.com",              // shown in footer / contact button
   instagramHandle: "captured.by.sienna",   // WITHOUT the @
-  // Google Calendar Appointment Schedule booking-page URL.
-  // Get it: Google Calendar → create Appointment schedule → "Open booking page" → copy URL.
-  // Looks like: https://calendar.google.com/calendar/appointments/schedules/AcZssZ...
-  bookingUrl: "",                          // paste it here — leave "" to show a placeholder
   city: "Marion, NY",
   // About portrait. PREFER a real image file (sharp, no IG branding):
   //   drop e.g. headshot.jpg in a "photos" folder, set: aboutImage: "photos/headshot.jpg"
@@ -132,15 +128,6 @@ const CONFIG = {
   .card li:first-child { border-top: none; }
   @media (max-width: 720px){ .cards { grid-template-columns: 1fr; } }
 
-  /* ---- BOOKING ---- */
-  #book { background: var(--bg-2); }
-  .book-note { text-align:center; color: var(--ink-soft); max-width: 560px; margin: 0 auto 36px; }
-  #cal-embed { min-height: 640px; background: #fff; border: 1px solid var(--line);
-    border-radius: 8px; overflow: hidden; }
-  #cal-embed iframe { width: 100%; height: 640px; border: 0; }
-  .cal-fallback { display: grid; place-items: center; min-height: 640px; text-align: center;
-    padding: 40px; color: var(--ink-soft); font-family: var(--serif); font-size: 1.3rem; }
-  .cal-fallback a { color: var(--accent); border-bottom: 1px solid var(--accent); }
 
   /* ---- INSTAGRAM ---- */
   .ig { text-align: center; }
@@ -171,10 +158,10 @@ const CONFIG = {
     #about-portrait { max-width: 380px; margin: 0 auto; }
     .gallery { grid-template-columns: 1fr; gap: 16px; }
     .btn { padding: 14px 34px; }
-    /* keep nav usable: show a Book shortcut instead of hidden links */
+    /* keep nav usable: show a Contact shortcut instead of hidden links */
     .navlinks { display: flex !important; gap: 0; }
-    .navlinks a:not([href="#book"]) { display: none; }
-    .navlinks a[href="#book"] { color: var(--accent); font-weight: 500; }
+    .navlinks a:not([href="#contact"]) { display: none; }
+    .navlinks a[href="#contact"] { color: var(--accent); font-weight: 500; }
   }
 </style>
 </head>
@@ -186,7 +173,7 @@ const CONFIG = {
     <a href="#work">Work</a>
     <a href="#about">About</a>
     <a href="#services">Services</a>
-    <a href="#book">Book</a>
+    <a href="#contact">Contact</a>
   </div>
 </div></nav>
 
@@ -194,7 +181,7 @@ const CONFIG = {
   <p class="eyebrow">Photography Studio</p>
   <h1 data-name></h1>
   <p class="tagline" data-tagline></p>
-  <a class="btn btn-solid" href="#book">Book a Session</a>
+  <a class="btn btn-solid" href="#contact">Get in Touch</a>
 </div></header>
 
 <section id="about"><div class="wrap">
@@ -227,13 +214,6 @@ const CONFIG = {
     <div class="card"><h3>Event</h3><div class="price">From $400</div>
       <ul><li>Up to 3 hours</li><li>Full coverage</li><li>100+ edited photos</li><li>Fast turnaround</li></ul></div>
   </div>
-</div></section>
-
-<section id="book"><div class="wrap">
-  <div class="section-head"><p class="eyebrow">Schedule</p><h2>Book Your Session</h2></div>
-  <p class="book-note">Pick any open time below. You'll get a calendar invite by email
-  the moment you book — and so will <span data-name-inline></span>.</p>
-  <div id="cal-embed"></div>
 </div></section>
 
 <section id="instagram" style="background:var(--bg-2)"><div class="wrap ig">
@@ -323,24 +303,6 @@ const CONFIG = {
   s.src = 'https://www.instagram.com/embed.js';
   s.onload = () => window.instgrm && window.instgrm.Embeds.process();
   document.body.appendChild(s);
-})();
-
-// ---- Google Calendar Appointment Schedule embed ----
-//   Sienna marks free times in her Google Calendar app. Bookings auto-email
-//   calendar invites to both parties and land on her calendar. No login on this site.
-(function () {
-  const el = document.getElementById('cal-embed');
-  const url = (CONFIG.bookingUrl || "").trim();
-  if (url) {
-    const iframe = document.createElement('iframe');
-    iframe.src = url;
-    iframe.loading = "lazy";
-    iframe.title = "Book a session";
-    el.appendChild(iframe);
-  } else {
-    el.innerHTML = '<div class="cal-fallback">Online booking opening soon.<br>' +
-      'Reach out at <a href="mailto:' + CONFIG.email + '">' + CONFIG.email + '</a> to schedule.</div>';
-  }
 })();
 </script>
 </body>
